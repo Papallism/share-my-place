@@ -1,3 +1,5 @@
+import { Modal } from "./UI/Modal";
+
 class PlaceFinder {
 	constructor() {
 		const addressForm = document.querySelector("form")
@@ -15,8 +17,13 @@ class PlaceFinder {
 			return
 		}
 
+		const modal = new Modal('loading-modal-content', 'Loading location...')
+		modal.show()
+
 		navigator.geolocation.getCurrentPosition(
 			(success) => {
+				modal.hide()
+				
         const coordinates = {
           lat: success.coords.latitude,
           lng: success.coords.longitude
@@ -24,6 +31,8 @@ class PlaceFinder {
         console.log(coordinates);
       },
 			(error) => {
+				modal.hide()
+				
         alert("Could not locate user.", error)
       }
 		)
